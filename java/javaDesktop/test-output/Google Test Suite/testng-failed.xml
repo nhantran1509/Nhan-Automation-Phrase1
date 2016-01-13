@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Google Test Suite]" parallel="none">
+  <parameter name="passwordEmailTo" value="Aa@159167"/>
+  <parameter name="emailSend" value="automationnhantest1@gmail.com"/>
+  <parameter name="browserName" value="Chrome"/>
+  <parameter name="passwordEmailSend" value="Aa@159167"/>
+  <parameter name="emailTo" value="automationnhantest2@gmail.com"/>
+  <test name="Google Tests(failed)" parallel="none" preserve-order="true">
+    <parameter name="passwordEmailTo" value="Aa@159167"/>
+    <parameter name="emailSend" value="automationnhantest1@gmail.com"/>
+    <parameter name="browserName" value="Chrome"/>
+    <parameter name="passwordEmailSend" value="Aa@159167"/>
+    <parameter name="emailTo" value="automationnhantest2@gmail.com"/>
+    <classes>
+      <class name="google.GoogleTestsDesktop">
+        <methods>
+          <include name="Setup"/>
+          <include name="GoogleComposeEmail"/>
+          <include name="Teardown"/>
+        </methods>
+      </class> <!-- google.GoogleTestsDesktop -->
+    </classes>
+  </test> <!-- Google Tests(failed) -->
+</suite> <!-- Failed suite [Google Test Suite] -->

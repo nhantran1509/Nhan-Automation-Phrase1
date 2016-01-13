@@ -1,7 +1,14 @@
 package google;
 
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -53,21 +60,21 @@ public class GoogleTestsDesktop {
 		}
 	}
 
-	@Test(priority = 1, description = "should not accept empty email or invalid email")
-	public void GoogleLogin_Invalid() {
-		driver.get(GOOGLE_URL);
-		Sleep(5000);
-		driver.findElementById("next").click();
-		Sleep(2000);
-		String errorMsg = driver.findElementById("errormsg_0_Email").getText();
-		Assert.assertEquals(errorMsg, "Please enter your email.");
-		driver.findElementById("Email").sendKeys("invalid_email@where.about");
-		driver.findElementById("next").click();
-		Sleep(2000);
-		String errorMsg2 = driver.findElementById("errormsg_0_Email").getText();
-		Assert.assertEquals(errorMsg2,
-				"Sorry, Google doesn't recognize that email. Create an account using that address?");
-	}
+//	@Test(priority = 1, description = "should not accept empty email or invalid email")
+//	public void GoogleLogin_Invalid() {
+//		driver.get(GOOGLE_URL);
+//		Sleep(5000);
+//		driver.findElementById("next").click();
+//		Sleep(2000);
+//		String errorMsg = driver.findElementById("errormsg_0_Email").getText();
+//		Assert.assertEquals(errorMsg, "Please enter your email.");
+//		driver.findElementById("Email").sendKeys("invalid_email@where.about");
+//		driver.findElementById("next").click();
+//		Sleep(2000);
+//		String errorMsg2 = driver.findElementById("errormsg_0_Email").getText();
+//		Assert.assertEquals(errorMsg2,
+//				"Sorry, Google doesn't recognize that email. Create an account using that address?");
+//	}
 
 	@Test(priority = 2, description = "should accept valid credentials")
 	public void GoogleLogin_Valid() {
@@ -84,9 +91,11 @@ public class GoogleTestsDesktop {
 		Sleep(1000);
 		driver.findElementByXPath("//textarea[@aria-label='To']").sendKeys(EMAIL_ADDRESS2);
 		driver.findElementByXPath("//input[@name='subjectbox']").sendKeys(SUBJECT1);
-		driver.findElementByXPath("//div[@id=':8y']").sendKeys(BODY1);
+//		driver.findElementByXPath("//div[@id=':8y']").sendKeys(BODY1);
+		driver.findElementByXPath("//div[@aria-label='Message Body']").sendKeys(BODY1);
 		Sleep(1000);
-		driver.findElementByXPath("//div[@id=':7m' and text()='Send']").click();
+//		driver.findElementByXPath("//div[@id=':7m' and text()='Send']").click();
+		driver.findElementByXPath("//div[text()='Send']").click();
 		Sleep(1000);
 		driver.get(SENT_URL);
 		Sleep(5000);
@@ -164,7 +173,12 @@ public class GoogleTestsDesktop {
 		Sleep(3000);
 		driver.findElementByXPath("//div[contains(@class,'oZ-jc T-Jo J-J5-Ji') and @role='checkbox'][1]").click();
 		Sleep(3000);
-		driver.findElementByXPath("//div[@class='Cq aqL']//div[@aria-label='Delete']").click();
+		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		WebElement btnDelete = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='Cq aqL']//div[@aria-label='Delete']")));
+		Actions actions = new Actions(driver);
+		actions.moveToElement(btnDelete).click().build().perform();
+//		driver.findElementByXPath("//div[@data-tooltip='Delete']").click();
 		Sleep(3000);
 		driver.findElementByXPath("//button[@name='ok' and text()='OK']").click();
 		Sleep(2000);
@@ -181,11 +195,17 @@ public class GoogleTestsDesktop {
 	private void Delete_Trash_Msg(){		
 		driver.get(TRASH_URL);
 		Sleep(5000);
-		driver.findElementByXPath("//div[@id=':78'][1]").click();
-		Sleep(1000);
-		driver.findElementByXPath("//div[contains(@class,'T-I-Zf-aw2') and text()='Delete forever']").click();
-		String getNoEmailMsg = driver.findElementByXPath("//div[@class='ae4 UI']").getText();
-
+//		driver.findElementByXPath("//div[@id=':78'][1]").click();
+		driver.findElementByXPath("//div[contains(@class,'oZ-jc T-Jo J-J5-Ji') and @role='checkbox'][1]").click();
+		Sleep(3000);
+		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+//		driver.findElementByXPath("//div[contains(@class,'T-I-Zf-aw2') and text()='Delete forever']").click();
+		WebDriverWait wait = new WebDriverWait(driver, 60);
+		WebElement btnDeleteForever = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@role='button' and text()='Delete forever']")));
+		Actions actions = new Actions(driver);
+		actions.moveToElement(btnDeleteForever).click().build().perform();
+		Sleep(3000);
+		String getNoEmailMsg = driver.findElementByXPath("//div[@id=':2']//div[2]/div[4]/div[2]/table/tbody/tr/td").getText();
 		Assert.assertEquals(MSG_NOEMAIL, getNoEmailMsg);
 	}
 
@@ -207,5 +227,4 @@ public class GoogleTestsDesktop {
 			e.printStackTrace();
 		}
 	}
-
 }

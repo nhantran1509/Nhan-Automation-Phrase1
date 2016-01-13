@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Google Test Suite" verbose="1" preserve-order="true" parallel="none">
+
+ <test name="Google Tests" >
+  <parameter name="browserName" value="Chrome"/>
+     <parameter name="emailSend" value="automationnhantest1@gmail.com"/>
+      <parameter name="passwordEmailSend" value="Aa@159167"/>
+     <parameter name="emailTo" value="automationnhantest2@gmail.com"/>
+     <parameter name="passwordEmailTo" value="Aa@159167"/>
+    <classes>
+      <class name="google.GoogleTestsDesktop"/>
+    </classes>
+ </test>
+</suite>
